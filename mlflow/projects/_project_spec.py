@@ -166,6 +166,7 @@ class Parameter(object):
         basename = os.path.basename(user_param_value)
         dest_path = os.path.join(storage_dir, basename)
         if dest_path != user_param_value:
+            # TODO(ML-6262) - this should use and support all URI types
             data.download_uri(uri=user_param_value, output_path=dest_path)
         return os.path.abspath(dest_path)
 

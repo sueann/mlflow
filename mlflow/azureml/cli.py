@@ -23,13 +23,13 @@ def commands():
 
 
 @commands.command("build-image")
-@cli_args.MODEL_PATH
+@cli_args.MODEL_PATH     # TODO(ML-6262)
 @click.option("--workspace-name", "-w", required=True,
               help="The name of the Azure Workspace in which to build the image.")
 @click.option("--subscription-id", "-s", default=None,
               help=("The subscription id associated with the Azure Workspace in which to build"
                     " the image"))
-@cli_args.RUN_ID
+@cli_args.RUN_ID         # TODO(ML-6262)
 @click.option("--image-name", "-i", default=None,
               help=("The name to assign the Azure Container Image that is created. If unspecified,"
                     " a unique image name will be generated."))

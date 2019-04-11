@@ -254,6 +254,7 @@ def add_to_model(model, loader_module, data=None, code=None, env=None, **kwargs)
     return model.add_flavor(FLAVOR_NAME, **parms)
 
 
+# TODO(ML-6262) - this should use the URI probably
 def _load_model_env(path, run_id=None):
     """
     Get ENV file string from a model configuration stored in Python Function format.
@@ -265,6 +266,7 @@ def _load_model_env(path, run_id=None):
     return _get_flavor_configuration(model_path=path, flavor_name=FLAVOR_NAME).get(ENV, None)
 
 
+# TODO(ML-6262) - this should use the URI probably
 def load_pyfunc(path, run_id=None, suppress_warnings=False):
     """
     Load a model stored in Python function format.
@@ -307,6 +309,7 @@ def _warn_potentially_incompatible_py_version_if_necessary(model_py_version=None
             model_py_version, PYTHON_VERSION)
 
 
+# TODO(ML-6262) - this should use the URI probably
 def spark_udf(spark, path, run_id=None, result_type="double"):
     """
     A Spark UDF that can be used to invoke the Python function formatted model.
@@ -418,6 +421,7 @@ def spark_udf(spark, path, run_id=None, result_type="double"):
     return pandas_udf(predict, result_type)
 
 
+# TODO(ML-6262) - this should support the Run URI probably - currently only accepts absolute URIs
 def save_model(dst_path, loader_module=None, data_path=None, code_path=None, conda_env=None,
                model=Model(), python_model=None, artifacts=None):
     """
@@ -529,6 +533,8 @@ def save_model(dst_path, loader_module=None, data_path=None, code_path=None, con
             code_paths=code_path, mlflow_model=model)
 
 
+# TODO(ML-6262) - this function assumes there is an active run. artifact_path is a relative path.
+#  Probably should not use absolute URIs. On the other hand, `artifacts` should support Run URIs.
 def log_model(artifact_path, loader_module=None, data_path=None, code_path=None, conda_env=None,
               python_model=None, artifacts=None):
     """

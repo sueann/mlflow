@@ -27,6 +27,7 @@ def commands():
 @cli_args.MODEL_PATH
 @click.option("--execution-role-arn", "-e", default=None, help="SageMaker execution role")
 @click.option("--bucket", "-b", default=None, help="S3 bucket to store model artifacts")
+# TODO(ML-6262) - this should use URIs
 @cli_args.RUN_ID
 @click.option("--image-url", "-i", default=None, help="ECR URL for the Docker image")
 @click.option("--region-name", default="us-west-2",
@@ -142,6 +143,7 @@ def delete(app_name, region_name, archive, asynchronous, timeout):
 
 @commands.command("run-local")
 @cli_args.MODEL_PATH
+# TODO(ML-6262) - this should use URIs - but should be local?
 @cli_args.RUN_ID
 @click.option("--port", "-p", default=5000, help="Server port. [default: 5000]")
 @click.option("--image", "-i", default=IMAGE, help="Docker image name")

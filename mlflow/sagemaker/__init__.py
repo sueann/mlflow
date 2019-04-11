@@ -202,6 +202,7 @@ def push_image_to_ecr(image=DEFAULT_IMAGE_NAME):
     os.system(cmd)
 
 
+# TODO(ML-6262) - this should use URIs
 def deploy(app_name, model_path, execution_role_arn=None, bucket=None, run_id=None,
            image_url=None, region_name="us-west-2", mode=DEPLOYMENT_MODE_CREATE, archive=False,
            instance_type=DEFAULT_SAGEMAKER_INSTANCE_TYPE,
@@ -525,6 +526,7 @@ def delete(app_name, region_name="us-west-2", archive=False, synchronous=True, t
             delete_operation.clean_up()
 
 
+# TODO(ML-6262) - this should use URIs - does it make sense to support non-local URIs though?
 def run_local(model_path, run_id=None, port=5000, image=DEFAULT_IMAGE_NAME, flavor=None):
     """
     Serve model locally in a SageMaker compatible Docker container.

@@ -27,6 +27,7 @@ from mlflow.utils.file_utils import TempDir
 class Model(object):
     """An MLflow Model that can support multiple model flavors."""
 
+    # TODO(ML-6262) - this should use the URI probably
     def __init__(self, artifact_path=None, run_id=None, utc_time_created=datetime.utcnow(),
                  flavors=None):
         # store model id instead of run_id and path to avoid confusion when model gets exported
@@ -55,6 +56,8 @@ class Model(object):
         with open(path) as f:
             return cls(**yaml.safe_load(f.read()))
 
+    # TODO(ML-6262) - this should use the URI probably - or not. it does associate a run with this action.
+    # TODO(API): make it "private"?
     @classmethod
     def log(cls, artifact_path, flavor, **kwargs):
         """

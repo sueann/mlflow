@@ -74,6 +74,7 @@ def get_tracking_uri():
         return os.path.abspath(DEFAULT_LOCAL_FILE_AND_ARTIFACT_PATH)
 
 
+# TODO(ML-6262) - if we have an artifact repo for runs://... this could get simpler.
 def get_artifact_uri(run_id, artifact_path=None):
     """
     Get the absolute URI of the specified artifact in the specified run. If `path` is not specified,
@@ -109,6 +110,10 @@ def get_artifact_uri(run_id, artifact_path=None):
         return artifact_path_module.join(run.info.artifact_uri, artifact_path)
 
 
+# TODO(ML-6262) - should this support Runs URI? there is no run context here. and it does not assume a tracking server
+#  is available in the context. this utils module could use better separation of methods based on what context is
+#  assumed (tracking vs models / deploy vs projects ...). It is also confusing to talk about tracking URIs and artifact
+#  URIs in the same file / module.
 def _download_artifact_from_uri(artifact_uri, output_path=None):
     """
     :param artifact_uri: The *absolute* URI of the artifact to download.
@@ -222,6 +227,9 @@ class TrackingStoreRegistry:
                     stacklevel=2
                 )
 
+    # TODO(ML-6262) - should this support Runs URI? i don't think so; you can always get the absolute URI to use here
+    #  e.g. if you wanted to put the artifacts for the entire store in the same location as a previous run for some
+    #  reason.
     def get_store(self, store_uri=None, artifact_uri=None):
         """Get a store from the registry based on the scheme of store_uri
 
@@ -272,6 +280,8 @@ def _get_store(store_uri=None, artifact_uri=None):
     return _tracking_store_registry.get_store(store_uri, artifact_uri)
 
 
+# TODO(ML-6262) - this logic should get pushed down to maybe artifact repos... or may become unnecessary after ML-6262.
+#  the fn is used in many Models implementations. i guess it is in tracking.utils because of run_id.
 def _get_model_log_dir(model_name, run_id):
     if not run_id:
         raise Exception("Must specify a run_id to get logging directory for a model.")

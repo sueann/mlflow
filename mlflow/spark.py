@@ -322,6 +322,8 @@ def _load_model(model_path, dfs_tmpdir=None):
     return PipelineModel.load(model_path)
 
 
+# TODO(ML-6262) - this should use the URI probably. Note: mlflow.tracking.utils._get_model_log_dir downloads
+#  from remote to local if needed despite the read-only sounding name.
 def load_model(path, run_id=None, dfs_tmpdir=None):
     """
     Load the Spark MLlib model from the path.

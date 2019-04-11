@@ -67,7 +67,7 @@ def _resolve_experiment_id(experiment_name=None, experiment_id=None):
     exp_id = exp_id or _get_experiment_id()
     return exp_id
 
-
+# TODO(ML-6262)(Part 2) - parameters should use/support the URI probably
 def _run(uri, experiment_id, entry_point="main", version=None, parameters=None,
          mode=None, cluster_spec=None, git_username=None, git_password=None, use_conda=True,
          storage_dir=None, block=True, run_id=None):
@@ -149,6 +149,7 @@ def _run(uri, experiment_id, entry_point="main", version=None, parameters=None,
                              "values: %s" % (mode, supported_modes))
 
 
+# TODO(ML-6262)(Part 2) - parameters should use/support the URI probably
 def run(uri, entry_point="main", version=None, parameters=None,
         experiment_name=None, experiment_id=None,
         mode=None, cluster_spec=None, git_username=None, git_password=None, use_conda=True,
@@ -366,6 +367,7 @@ def _unzip_repo(zip_file, dst_dir):
         zip_in.extractall(dst_dir)
 
 
+# TODO(ML-6262)(Part 3): downloading project zip files via artifact repos
 def _fetch_zip_repo(uri):
     import requests
     from io import BytesIO
@@ -592,6 +594,7 @@ def _get_run_env_vars(run_id, experiment_id):
     }
 
 
+# TODO(ML-6262)(Part 2) - audit
 def _invoke_mlflow_run_subprocess(
         work_dir, entry_point, parameters, experiment_id, use_conda, storage_dir, run_id):
     """

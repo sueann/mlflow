@@ -29,6 +29,8 @@ def _get_store():
     global _store
     if _store is None:
         store_dir = os.environ.get(BACKEND_STORE_URI_ENV_VAR, None)
+        # TODO(sueann): a tracking server's store is associated with an artifact_root (artifact_root_uri).
+        #  artifact location is based on the run's > experiment's > tracking store's.
         artifact_root = os.environ.get(ARTIFACT_ROOT_ENV_VAR, None)
         if _is_database_uri(store_dir):
             from mlflow.store.sqlalchemy_store import SqlAlchemyStore

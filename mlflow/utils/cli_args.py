@@ -3,6 +3,8 @@ Definitions of click options shared by several CLI commands.
 """
 import click
 
+
+# TODO(ML-6262) - may not need anymore (inspect)
 MODEL_PATH = click.option("--model-path", "-m", default=None, metavar="PATH", required=True,
                           help="Path to the model. The path is relative to the run with the given "
                                "run-id or local filesystem path without run-id.")

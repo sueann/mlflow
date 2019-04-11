@@ -858,6 +858,7 @@ message ListArtifacts {
 
 // Metadata of a single artifact file or directory.
 message FileInfo {
+  // TODO(sueann): what is the scope for this? it does not take a run_uuid
   // Path relative to the root artifact directory run.
   optional string path = 1;
 

@@ -46,6 +46,7 @@ def commands():
 
 @commands.command("serve")
 @cli_args.MODEL_PATH
+# TODO(ML-6262) - this should use the URI probably
 @cli_args.RUN_ID
 @click.option("--port", "-p", default=5000, help="Server port. [default: 5000]")
 @click.option("--host", "-h", default="127.0.0.1", help="Server host. [default: 127.0.0.1]")

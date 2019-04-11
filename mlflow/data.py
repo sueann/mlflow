@@ -18,6 +18,7 @@ S3_REGEX = re.compile("^%s" % re.escape(S3_PREFIX))
 class DownloadException(Exception):
     pass
 
+# TODO(ML-6262): this file has random but relevant functions for dealing with artifacts / URIs.
 
 def _fetch_dbfs(uri, local_path):
     print("=== Downloading DBFS file %s to local path %s ===" % (uri, os.path.abspath(local_path)))
@@ -46,6 +47,7 @@ def is_uri(string):
     return len(parsed_uri.scheme) > 0
 
 
+# TODO(ML-6262) - this should use and support all URI types
 def download_uri(uri, output_path):
     if DBFS_REGEX.match(uri):
         _fetch_dbfs(uri, output_path)

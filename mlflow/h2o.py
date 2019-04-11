@@ -94,6 +94,7 @@ def save_model(h2o_model, path, conda_env=None, mlflow_model=Model(), settings=N
     mlflow_model.save(os.path.join(path, "MLmodel"))
 
 
+# TODO-none(ML-6262) - no URI - there is a notion of a run here.
 def log_model(h2o_model, artifact_path, conda_env=None, **kwargs):
     """
     Log an H2O model as an MLflow artifact for the current run.
@@ -152,6 +153,8 @@ def _load_pyfunc(path):
     return _H2OModelWrapper(_load_model(path, init=True))
 
 
+# TODO(ML-6262) - this should use the URI probably. Note: mlflow.tracking.utils._get_model_log_dir downloads
+#  from remote to local if needed despite the read-only sounding name.
 def load_model(path, run_id=None):
     """
     Load an H2O model from a local file (if ``run_id`` is ``None``) or a run.

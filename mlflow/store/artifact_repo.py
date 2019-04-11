@@ -29,12 +29,12 @@ class ArtifactRepository:
     @abstractmethod
     def log_artifact(self, local_file, artifact_path=None):
         """
-        Log a local file as an artifact, optionally taking an ``artifact_path`` to place it in
-        within the run's artifacts. Run artifacts can be organized into directories, so you can
+        Log a local file as an artifact, optionally taking an ``artifact_path`` to place it in a
+        subpath of ``artifact_uri``. Artifacts can be organized into directories, so you can
         place the artifact in a directory this way.
 
         :param local_file: Path to artifact to log
-        :param artifact_path: Directory within the run's artifact directory in which to log the
+        :param artifact_path: Directory within the repo's artifact directory in which to log the
                               artifact
         """
         pass
@@ -43,10 +43,10 @@ class ArtifactRepository:
     def log_artifacts(self, local_dir, artifact_path=None):
         """
         Log the files in the specified local directory as artifacts, optionally taking
-        an ``artifact_path`` to place them in within the run's artifacts.
+        an ``artifact_path`` to place them in a subpath of ``artifact_uri``.
 
         :param local_dir: Directory of local artifacts to log
-        :param artifact_path: Directory within the run's artifact directory in which to log the
+        :param artifact_path: Directory within the repo's artifact directory in which to log the
                               artifacts
         """
         pass
@@ -54,8 +54,9 @@ class ArtifactRepository:
     @abstractmethod
     def list_artifacts(self, path):
         """
-        Return all the artifacts for this run_uuid directly under path. If path is a file, returns
-        an empty list. Will error if path is neither a file nor directory.
+        Return all the artifacts for directly under path (which is assumed to be within
+        the artifact repo's ``artifact_uri``). If ``path`` is a file, returns
+        an empty list. Will error if ``path`` is neither a file nor a directory.
 
         :param path: Relative source path that contain desired artifacts
 
@@ -69,7 +70,7 @@ class ArtifactRepository:
         local path for it.
         The caller is responsible for managing the lifecycle of the downloaded artifacts.
 
-        :param path: Relative source path to the desired artifacts.
+        :param path: Source path to the desired artifacts, relative to the repo's artifact directory
         :param dst_path: Absolute path of the local filesystem destination directory to which to
                          download the specified artifacts. This directory must already exist. If
                          unspecified, the artifacts will be downloaded to a new, uniquely-named

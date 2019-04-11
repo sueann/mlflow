@@ -119,6 +119,7 @@ class MlflowClient(object):
         """
         return self.store.get_experiment_by_name(name)
 
+    # TODO(ML-6262) - this should not support Runs URI but other URIs
     def create_experiment(self, name, artifact_location=None):
         """Create an experiment.
 

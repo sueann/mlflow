@@ -211,6 +211,7 @@ def _validate_static_prefix(ctx, param, value):  # pylint: disable=unused-argume
                    "example MySQL backed store can be configured using connection string. "
                    "'mysql://<user_name>:<password>@<host>:<port>/<database_name>' "
                    "By default file based backed store will be used. (default: ./mlruns).")
+# TODO(ML-6262) - is this really only for S3? or other repo types are ok?
 @click.option("--default-artifact-root", metavar="URI", default=None,
               help="Local or S3 URI to store artifacts, for new experiments. "
                    "Note that this flag does not impact already-created experiments. "

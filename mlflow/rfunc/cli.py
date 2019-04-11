@@ -38,6 +38,7 @@ def str_optional(s):
 
 @commands.command("serve")
 @cli_args.MODEL_PATH
+# TODO(ML-6262) - this should use URIs
 @cli_args.RUN_ID
 @click.option("--port", "-p", default=5000, help="Server port. [default: 5000]")
 def serve(model_path, run_id, port):
@@ -56,6 +57,7 @@ def serve(model_path, run_id, port):
 
 @commands.command("predict")
 @cli_args.MODEL_PATH
+# TODO(ML-6262) - this should use URIs
 @cli_args.RUN_ID
 @click.option("--input-path", "-i", help="JSON or CSV containing DataFrame to predict against.",
               required=True)

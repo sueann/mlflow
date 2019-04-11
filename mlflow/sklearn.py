@@ -227,6 +227,8 @@ def _save_model(sk_model, output_path, serialization_format):
                     error_code=INTERNAL_ERROR)
 
 
+# TODO(ML-6262) - this should use the URI probably. Note: mlflow.tracking.utils._get_model_log_dir downloads
+#  from remote to local if needed despite the read-only sounding name.
 def load_model(path, run_id=None):
     """
     Load a scikit-learn model from a local file (if ``run_id`` is None) or a run.

@@ -255,6 +255,7 @@ def log_artifacts(local_dir, artifact_path=None):
     MlflowClient().log_artifacts(run_id, local_dir, artifact_path)
 
 
+# TODO(ML-6262) - this should not support Runs URI but other URIs
 def create_experiment(name, artifact_location=None):
     """
     Create an experiment.

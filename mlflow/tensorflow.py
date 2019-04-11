@@ -171,6 +171,8 @@ def _validate_saved_model(tf_saved_model_dir, tf_meta_graph_tags, tf_signature_d
                     tf_signature_def_key=tf_signature_def_key)
 
 
+# TODO(ML-6262) - this should use the URI probably. Note: mlflow.tracking.utils._get_model_log_dir downloads
+#  from remote to local if needed despite the read-only sounding name.
 def load_model(path, tf_sess, run_id=None):
     """
     Load an MLflow model that contains the TensorFlow flavor from the specified path.

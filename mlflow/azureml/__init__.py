@@ -26,6 +26,7 @@ from mlflow.version import VERSION as mlflow_version
 _logger = logging.getLogger(__name__)
 
 
+# TODO(ML-6262) - this should probably use the URI
 def build_image(model_path, workspace, run_id=None, image_name=None, model_name=None,
                 mlflow_home=None, description=None, tags=None, synchronous=True):
     """
@@ -197,7 +198,7 @@ def build_image(model_path, workspace, run_id=None, image_name=None, model_name=
             image.wait_for_creation(show_output=True)
         return image, registered_model
 
-
+# TODO(ML-6262)
 def _build_tags(relative_model_path, run_id, model_python_version=None, user_tags=None):
     """
     :param model_path: The path to MLflow model for which the image is being built. If a run id
@@ -277,6 +278,7 @@ def _get_container_path(local_path):
     return os.path.join("/var/azureml-app", local_path)
 
 
+# TODO(ML-6262) - confirm this is only for local paths
 def _load_pyfunc_conf(model_path):
     """
     Loads the `python_function` flavor configuration for the specified model or throws an exception

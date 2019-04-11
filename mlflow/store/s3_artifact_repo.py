@@ -12,16 +12,17 @@ from mlflow.store.artifact_repo import ArtifactRepository
 class S3ArtifactRepository(ArtifactRepository):
     """Stores artifacts on Amazon S3."""
 
-    @staticmethod
-    def parse_s3_uri(uri):
-        """Parse an S3 URI, returning (bucket, path)"""
-        parsed = urllib.parse.urlparse(uri)
-        if parsed.scheme != "s3":
-            raise Exception("Not an S3 URI: %s" % uri)
-        path = parsed.path
-        if path.startswith('/'):
-            path = path[1:]
-        return parsed.netloc, path
+    # TODO(ML-6262) - this function is no longer used? moved to mlflow.data perhaps.
+    # @staticmethod
+    # def parse_s3_uri(uri):
+    #     """Parse an S3 URI, returning (bucket, path)"""
+    #     parsed = urllib.parse.urlparse(uri)
+    #     if parsed.scheme != "s3":
+    #         raise Exception("Not an S3 URI: %s" % uri)
+    #     path = parsed.path
+    #     if path.startswith('/'):
+    #         path = path[1:]
+    #     return parsed.netloc, path
 
     def _get_s3_client(self):
         s3_endpoint_url = os.environ.get('MLFLOW_S3_ENDPOINT_URL')

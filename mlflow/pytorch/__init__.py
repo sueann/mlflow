@@ -285,6 +285,7 @@ def _load_model(path, **kwargs):
     return torch.load(model_path, **kwargs)
 
 
+# TODO(ML-6262) - this should use URIs
 def load_model(path, run_id=None, **kwargs):
     """
     Load a PyTorch model from a local file (if ``run_id`` is ``None``) or a run.
