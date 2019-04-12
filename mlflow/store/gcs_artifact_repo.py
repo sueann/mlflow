@@ -14,6 +14,7 @@ class GCSArtifactRepository(ArtifactRepository):
     see https://google-cloud.readthedocs.io/en/latest/core/auth.html.
     """
 
+    # TODO(ML-6262) - is the client only used for testing?
     def __init__(self, artifact_uri, client=None):
         if client:
             self.gcs = client

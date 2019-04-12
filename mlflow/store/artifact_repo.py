@@ -16,8 +16,13 @@ class ArtifactRepository:
     __metaclass__ = ABCMeta
 
     def __init__(self, artifact_uri):
+        # TODO(ML-6262) - we want this to be something like artifact_uri_base, which may contain
+        #  e.g. auth info. Or, ArtifactRepository could only have classmethods that work with
+        #  absolute URIs. RunArtifactRepo could contain artifact_uri and construct the absolute
+        #  URI to the underlying artifact repos.
         self.artifact_uri = artifact_uri
 
+    # TODO(ML-6262) - ideally this becomes protected
     @abstractmethod
     def get_path_module(self):
         """
@@ -25,6 +30,30 @@ class ArtifactRepository:
                  paths. For example, if the artifact repository's URI scheme uses POSIX paths,
                  this method may return the ``posixpath`` module.
         """
+
+    # TODO(ML-6262): we probably want a standard set of functions to deal with URIs -- just so RunArtifactRepository
+    #  can use it. e.g.
+    #    def get_absolute_uri(base_path, relative_path)
+    #  would be nice even without the change of method arguments to absolute URIs.
+    #   --- Actually don't need it if we just use absolute URIs everywhere.
+
+    # TODO(ML-6262) - artifact_path should be required, unless you are RunArtifactRepository
+    #   actually the most convenient would be if the artifact_path could be an absolute URI -or- a relative path
+    #   The goal would be to eliminate the need to do any URI parsing as a user of ArtifactRepository.
+    #   [Weirdness] __init__ takes in a URI but it will ignore any part of actual path (non-metadata)
+    #   In a way, artifact repositories are a weird concept. All functions could take in absolute URIs and do the
+    #   parsing right there.
+    #   Only when you have a run context, does it become useful to have relative paths. Even there, it can take in
+    #   the Runs URI and have the same functions. Also doing "parsing" as needed.
+    #  > All these classes can be static classes.
+    #  The only times ``get_artifact_repository`` seems used, the object is used only *once*.
+
+    # TODO(ML-6262) - we can have a higher-level set of functions that correspond to ArtifactRepository methods
+    #   that take in a URI and initializes the correct ArtifactRepository and does the action.
+    #   For Runs, there is tracking/client.py.
+    #   For other URIs, it is simple enough to do artifact_repository_registry.get_artifact_repository(URI).xxx(..., URI)
+    #   though it is a bit redundant. We can create an artifacts module (maybe store.artifacts __init__.py).
+    #   This is essentially what store/cli.py does. Why don't we have a corresponding API (like we do in tracking I believe)?
 
     @abstractmethod
     def log_artifact(self, local_file, artifact_path=None):

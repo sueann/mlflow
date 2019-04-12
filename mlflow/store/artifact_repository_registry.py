@@ -77,7 +77,7 @@ class ArtifactRepositoryRegistry:
 
 _artifact_repository_registry = ArtifactRepositoryRegistry()
 
-_artifact_repository_registry.register('', LocalArtifactRepository)
+_artifact_repository_registry.register('', LocalArtifactRepository)  # TODO(ML-6262) - does this work with windows? i guess /C:/...
 _artifact_repository_registry.register('s3', S3ArtifactRepository)
 _artifact_repository_registry.register('gs', GCSArtifactRepository)
 _artifact_repository_registry.register('wasbs', AzureBlobArtifactRepository)

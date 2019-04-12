@@ -282,6 +282,7 @@ def _get_store(store_uri=None, artifact_uri=None):
 
 # TODO(ML-6262) - this logic should get pushed down to maybe artifact repos... or may become unnecessary after ML-6262.
 #  the fn is used in many Models implementations. i guess it is in tracking.utils because of run_id.
+# Downloads a model artifact to a local dir
 def _get_model_log_dir(model_name, run_id):
     if not run_id:
         raise Exception("Must specify a run_id to get logging directory for a model.")

@@ -13,7 +13,7 @@ class FTPArtifactRepository(ArtifactRepository):
     """Stores artifacts as files in a remote directory, via ftp."""
 
     def __init__(self, artifact_uri):
-        self.uri = artifact_uri
+        self.uri = artifact_uri        # TODO(ML-6262) - why? self.uri does not seem used.
         parsed = urllib.parse.urlparse(artifact_uri)
         self.config = {
             'host': parsed.hostname,
