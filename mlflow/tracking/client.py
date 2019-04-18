@@ -215,7 +215,7 @@ class MlflowClient(object):
         :param artifact_path: If provided, the directory in ``artifact_uri`` to write to.
         """
         run = self.get_run(run_id)
-        artifact_repo = get_artifact_repository(run.info.artifact_uri, self.store)
+        artifact_repo = get_artifact_repository(run.info.artifact_uri)
         artifact_repo.log_artifact(local_path, artifact_path)
 
     def log_artifacts(self, run_id, local_dir, artifact_path=None):
@@ -226,7 +226,7 @@ class MlflowClient(object):
         :param artifact_path: If provided, the directory in ``artifact_uri`` to write to.
         """
         run = self.get_run(run_id)
-        artifact_repo = get_artifact_repository(run.info.artifact_uri, self.store)
+        artifact_repo = get_artifact_repository(run.info.artifact_uri)
         artifact_repo.log_artifacts(local_dir, artifact_path)
 
     def list_artifacts(self, run_id, path=None):
@@ -240,7 +240,7 @@ class MlflowClient(object):
         """
         run = self.get_run(run_id)
         artifact_root = run.info.artifact_uri
-        artifact_repo = get_artifact_repository(artifact_root, self.store)
+        artifact_repo = get_artifact_repository(artifact_root)
         return artifact_repo.list_artifacts(path)
 
     def download_artifacts(self, run_id, path):
@@ -254,7 +254,7 @@ class MlflowClient(object):
         """
         run = self.get_run(run_id)
         artifact_root = run.info.artifact_uri
-        artifact_repo = get_artifact_repository(artifact_root, self.store)
+        artifact_repo = get_artifact_repository(artifact_root)
         return artifact_repo.download_artifacts(path)
 
     def set_terminated(self, run_id, status=None, end_time=None):
