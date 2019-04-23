@@ -43,8 +43,8 @@ def get_artifact_uri(run_id, artifact_path=None):
         return artifact_path_module.join(run.info.artifact_uri, artifact_path)
 
 
-# TODO(sueann): This method does not require a Run and its internals should be moved to
-#  data.download_uri (requires confirming that Projects will not break with this change).
+# TODO(sueann- different PR): This method does not require a Run and its internals should be
+#  moved to data.download_uri (requires confirming that Projects will not break with this change).
 def _download_artifact_from_uri(artifact_uri, output_path=None):
     """
     :param artifact_uri: The *absolute* URI of the artifact to download.
