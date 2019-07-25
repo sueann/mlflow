@@ -22,6 +22,7 @@ import yaml
 
 import mlflow
 from mlflow.utils.file_utils import TempDir
+from mlflow.registry.client import MLflowRegistryClient
 
 
 class Model(object):
@@ -60,7 +61,7 @@ class Model(object):
             return cls(**yaml.safe_load(f.read()))
 
     @classmethod
-    def log(cls, artifact_path, flavor, **kwargs):
+    def log(cls, artifact_path, flavor, registered_model_name=None, **kwargs):
         """
         Log model using supplied flavor module.
 
@@ -68,6 +69,9 @@ class Model(object):
         :param flavor: Flavor module to save the model with. The module must have
                        the ``save_model`` function that will persist the model as a valid
                        MLflow model.
+        :param registered_model_name: If set, register a RegisteredModel with this name.
+                                      If a RegisteredModel with the name exists, register a
+                                      new version.
         :param kwargs: Extra args passed to the model flavor.
         """
         with TempDir() as tmp:
@@ -76,6 +80,8 @@ class Model(object):
             mlflow_model = cls(artifact_path=artifact_path, run_id=run_id)
             flavor.save_model(path=local_path, mlflow_model=mlflow_model, **kwargs)
             mlflow.tracking.fluent.log_artifacts(local_path, artifact_path)
+        if registered_model_name.strip():
+            # TODO(sueann): add logic to register - add arg for registered_model_name
 
 
 class FlavorBackend(object):
