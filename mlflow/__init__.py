@@ -62,8 +62,8 @@ set_experiment = mlflow.tracking.fluent.set_experiment
 log_params = mlflow.tracking.fluent.log_params
 log_metrics = mlflow.tracking.fluent.log_metrics
 set_tags = mlflow.tracking.fluent.set_tags
-# register_model
-
+# register_model - handles both models and versions
+# search? not sure if needed
 
 run = projects.run
 
