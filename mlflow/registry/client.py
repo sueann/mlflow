@@ -19,33 +19,39 @@ class MlflowRegistryClient(object):
         self.registry_uri = registry_uri or utils.get_registry_uri()
 
     # RegisteredModel methods
-    """
-    Create: This is an API or UI flow to create an entity in Model Registry with a unique name. When created, this RegisteredModel is an empty collection. Multiple ModelVersion entities may be added for this RegisteredModel--they all have the same name inherited from the RegisteredModel and unique version number.
-    POST 2.0/mlflow/registered-models/create
-    Rename: Change the name for this model. Name uniqueness guarantee with the registry needs to be satisfied after name change.
-    PUT/PATCH or POST 2.0/mlflow/registered-models/update
-    Delete a RegisteredModel. All ModelVersion entities associated with this name will also be deleted.
-    DELETE 2.0/mlflow/registered-models/delete
-    List all RegisteredModels will return a list of RegisteredModel entities
-    GET 2.0/mlflow/registered-models/list
-    """
+
+    def create_registered_model(self, name):
+        raise NotImplementedError()
+
+    def rename_registered_model(self, name, new_name):
+        raise NotImplementedError()
+
+    def delete_registered_model(self, name):
+        raise NotImplementedError()
+
+    def list_registered_models(self):
+        raise NotImplementedError()
 
     # ModelVersion methods
-    """
-    Register a new version: Adds a new model within RegisteredModel, of the given name. Incrementally generate a new version and generate a unique identifier. Models have a source (run_id, "runs://…" source URI, or a URI path the model). This model needs to be copied into registry.
-    POST 2.0/mlflow/model-versions/create
-    Delete the model and associated metadata. Unique ID and model version number cannot be reused.
-    DELETE 2.0/mlflow/model-versions/delete
-    Update metadata for ModelVersions
-        PUT/PATCH or POST 2.0/mlflow/model-versions/update
-    Get metadata for ModelVersions.
-        GET 2.0/mlflow/model-versions/get-info
-    Search registry for ModelVersions using associated metadata.
-    GET 2.0/mlflow/model-versions/search
-    List all ModelVersions for a RegisteredModel
-        GET 2.0/mlflow/model-versions/search (reuse search API for this)
-    
-    Transitions, comments, ACLs are edge features and will be accessed by the REST API and UI only.
-    """
 
+    def create_model_version(self, name, source):
+        # we may need to copy from source to local context then upload to dbfs if registry is on databricks
+        # or, initially we only support dbfs -> dbfs copy and handle it on the server
+        # can the mlflow server read from s3/azure blob locations mounted onto dbfs?
+        raise NotImplementedError()
 
+    def get_model_version(self, name, source):
+        raise NotImplementedError()
+
+    def update_model_version(self, name, version, stage):
+        # Q: should we ship OSS MLflow with a fixed set of stages?
+        raise NotImplementedError()
+
+    def delete_model_version(self, name, version):
+        """
+        Delete the model and associated metadata. Unique ID and model version number cannot be reused.
+        """
+        raise NotImplementedError()
+
+    def search_model_versions(self, filter, max_results, order_by, page_token):
+        raise NotImplementedError()

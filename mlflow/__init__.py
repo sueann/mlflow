@@ -27,6 +27,7 @@ For a lower level API, see the :py:mod:`mlflow.tracking` module.
 from mlflow.version import VERSION as __version__
 from mlflow.utils.logging_utils import _configure_mlflow_loggers
 import mlflow.tracking.fluent
+import mlflow.registry.fluent
 
 # Filter annoying Cython warnings that serve no good purpose, and so before
 # importing other modules.
@@ -62,8 +63,8 @@ set_experiment = mlflow.tracking.fluent.set_experiment
 log_params = mlflow.tracking.fluent.log_params
 log_metrics = mlflow.tracking.fluent.log_metrics
 set_tags = mlflow.tracking.fluent.set_tags
-# register_model - handles both models and versions
-# search? not sure if needed
+register_model_version = mlflow.registry.fluent.register_model_version
+list_model_versions = mlflow.registry.list_model_versions
 
 run = projects.run
 
