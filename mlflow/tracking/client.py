@@ -9,12 +9,14 @@ from mlflow.entities import ViewType
 from mlflow.entities.model_registry.model_version_stages import ALL_STAGES
 from mlflow.exceptions import MlflowException
 from mlflow.protos.databricks_pb2 import FEATURE_DISABLED
+from mlflow.store.artifact.artifact_repository_registry import ArtifactRepositoryRegistry
 from mlflow.store.tracking import SEARCH_MAX_RESULTS_DEFAULT
 from mlflow.store.model_registry import SEARCH_REGISTERED_MODEL_MAX_RESULTS_DEFAULT
 from mlflow.tracking._model_registry.client import ModelRegistryClient
-from mlflow.tracking.registry import UnsupportedModelRegistryStoreURIException
 from mlflow.tracking._tracking_service import utils
 from mlflow.tracking._tracking_service.client import TrackingServiceClient
+from mlflow.tracking.artifact_utils import _download_artifact_from_uri
+from mlflow.tracking.registry import UnsupportedModelRegistryStoreURIException
 from mlflow.utils import experimental
 
 _logger = logging.getLogger(__name__)
@@ -448,7 +450,20 @@ class MlflowClient(object):
         :return: Single :py:class:`mlflow.entities.model_registry.ModelVersion` object created by
                  backend.
         """
-        return self._get_registry_client().create_model_version(name, source, run_id)
+        if (self._tracking_client.tracking_uri.startswith("databricks:/") and
+            self._registry_uri.startswith("databricks:/") and
+            self._tracking_client.tracking_uri != self._registry_uri):
+            import uuid
+            # Copy from source to registry
+            local_dir = _download_artifact_from_uri(source)
+            dest_root = 'dbfs:/databricks/mlflow/'  # TODO: check directory format
+            dest_repo = ArtifactRepositoryRegistry.get_artifact_repository(dest_root)
+            dest_dir = run_id if run_id else uuid.uuid1()
+            dest_repo.log_artifacts(local_dir, artifact_path=dest_dir)
+            new_source = dest_root + dest_dir
+        else:
+            new_source = source
+        return self._get_registry_client().create_model_version(name, new_source, run_id)
 
     @experimental
     def update_model_version(self, name, version, description=None):

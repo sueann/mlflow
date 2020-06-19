@@ -5,6 +5,7 @@ import subprocess
 from mlflow.exceptions import MlflowException
 from mlflow.utils.rest_utils import MlflowHostCreds
 from databricks_cli.configure import provider
+from databricks_cli.configure.provider import DatabricksConfig
 from mlflow.utils._spark_utils import _get_active_spark_session
 
 _logger = logging.getLogger(__name__)
@@ -162,6 +163,15 @@ def get_databricks_host_creds(profile=None):
         config = provider.ProfileConfigProvider(profile).get_config()
     else:
         config = provider.get_config()
+    if not config or not config.host:
+        # try dbutils.secrets -- secrets of the form: scope = "<profile>", key = "host", key = "token"
+        # TODO(sueann): DB notebook tests
+        dbutils = _get_dbutils()
+        if dbutils:
+            host = dbutils.secrets.get(scope=profile, key="host")
+            token = dbutils.secrets.get(scope=profile, key="token")
+            if host and token:
+                DatabricksConfig.from_token(host=host, token=token, insecure=False)   # TODO(sueann): chk what to do with insecure
     if not config or not config.host:
         _fail_malformed_databricks_auth(profile)
 
