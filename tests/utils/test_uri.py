@@ -82,6 +82,13 @@ def test_get_db_info_from_uri_errors(server_uri):
             "https://www.databricks.com/?o=12211#mlflow/experiments/19201/runs/2231",
         ),
         (
+            "https://www.databricks.com",
+            "19201",
+            "2231",
+            "12211",
+            "https://www.databricks.com/?o=12211#mlflow/experiments/19201/runs/2231",
+        ),
+        (
             "https://www.databricks.com/",
             "19201",
             "2231",
