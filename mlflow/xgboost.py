@@ -49,6 +49,7 @@ from mlflow.utils.autologging_utils import (
     ENSURE_AUTOLOGGING_ENABLED_TEXT,
     batch_metrics_logger,
 )
+from mlflow.utils.logging_utils import eprint
 
 # Pylint doesn't detect objects used in class keyword arguments (e.g., metaclass) and considers
 # `ExceptionSafeAbstractClass` as 'unused-import': https://github.com/PyCQA/pylint/issues/1630
@@ -64,17 +65,36 @@ FLAVOR_NAME = "xgboost"
 _logger = logging.getLogger(__name__)
 
 
+def _get_version_from_conda(pkg_name):
+    with os.popen("conda list {pkg_name} | grep {pkg_name}".format(pkg_name=pkg_name)) as stream:
+        output = stream.read().split()
+        if len(output) == 4 and output[0] == pkg_name and '.' in output[1]:  # super robust
+            eprint("Inferred %s version from the current conda environment." % pkg_name)
+            return output[1]
+
+
+def _get_version_from_pip(pkg_name):
+    version = None
+    with os.popen("pip show {pkg_name} | grep Version".format(pkg_name=pkg_name)) as stream:
+        output = stream.read().split()
+        if len(output) == 2 and output[0] == 'Version:' and '.' in output[1]:  # also super robust
+            eprint("Inferred %s version from pip." % pkg_name)
+            return output[1]
+
+
 def get_default_conda_env():
     """
     :return: The default Conda environment for MLflow Models produced by calls to
              :func:`save_model()` and :func:`log_model()`.
     """
     import xgboost as xgb
+    pkg_name = 'xgboost'
+    version = _get_version_from_conda(pkg_name) or _get_version_from_pip(pkg_name) or xgb.__version__
 
     return _mlflow_conda_env(
         additional_conda_deps=None,
         # XGBoost is not yet available via the default conda channels, so we install it via pip
-        additional_pip_deps=["xgboost=={}".format(xgb.__version__)],
+        additional_pip_deps=["xgboost=={}".format(version)],
         additional_conda_channels=None,
     )
 
